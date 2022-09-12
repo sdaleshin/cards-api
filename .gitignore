@@ -1,0 +1,6 @@
+.env
+.env-prod
+.idea
+*.iml
+/node_modules/
+/dist/
