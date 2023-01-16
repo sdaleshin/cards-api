@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cards-api
+spec:
+  containers:
+    - name: cards-api-container
+      image: sdaleshin/cards
+  imagePullSecrets:
+    - name: regcred

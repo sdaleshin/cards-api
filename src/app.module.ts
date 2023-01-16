@@ -21,12 +21,12 @@ import { Card } from './cards/card.model'
             database: process.env.PG_DB_NAME,
             models: [User, Folder, Card],
             autoLoadModels: true,
-            // dialectOptions: {
-            //     ssl: {
-            //         require: true,
-            //         rejectUnauthorized: false,
-            //     },
-            // },
+            dialectOptions: {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized: false,
+                },
+            },
         }),
         UsersModule,
         AuthModule,

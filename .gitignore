@@ -1,5 +1,6 @@
 .env
 .env-prod
+.env-local
 .idea
 *.iml
 /node_modules/
