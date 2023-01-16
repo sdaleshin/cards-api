@@ -17,7 +17,7 @@ async function bootstrap() {
         .setTitle('Flash cards api')
         .setDescription('REST api documentation')
         .setVersion('0.0.1')
-        .addTag('cards.furnas api')
+        .addTag('cards.furnas api test')
         .build()
 
     const document = SwaggerModule.createDocument(app, config)
