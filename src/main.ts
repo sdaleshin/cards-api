@@ -14,7 +14,7 @@ async function bootstrap() {
     )
 
     const config = new DocumentBuilder()
-        .setTitle('Flash cards api')
+        .setTitle('Flash cards api 1')
         .setDescription('REST api documentation')
         .setVersion('0.0.1')
         .addTag('cards.furnas api test')
