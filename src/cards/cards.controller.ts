@@ -6,6 +6,7 @@ import {
     Param,
     Post,
     Put,
+    Req,
     UseGuards,
 } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
@@ -14,6 +15,11 @@ import { CardsService } from './cards.service'
 import { CreateCardDto } from './dto/CreateCardDto'
 import { Card } from './card.model'
 import { UpdateCardDto } from './dto/UpdateCardDto'
+import { JwtTokenPayload } from '../auth/auth.type'
+
+interface Request {
+    user: JwtTokenPayload
+}
 
 @ApiTags('Cards')
 @Controller('cards')
@@ -34,6 +40,14 @@ export class CardsController {
     @Get('/by-folder/:folderId')
     getByFolderId(@Param('folderId') folderId: number) {
         return this.cardsService.getCardsByFolderId(folderId)
+    }
+
+    @ApiOperation({ summary: 'Get all cards for use' })
+    @ApiResponse({ status: 200, type: [Card] })
+    @UseGuards(JwtAuthGuard)
+    @Get()
+    getAll(@Req() request: Request) {
+        return this.cardsService.getAllCardsByUserId(request.user.id)
     }
 
     @ApiOperation({ summary: 'Update card' })

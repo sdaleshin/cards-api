@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { Card, CardCreationAttrs } from './card.model'
 import { UpdateCardDto } from './dto/UpdateCardDto'
+import { Folder } from '../folders/folder.model'
 
 @Injectable()
 export class CardsService {
@@ -15,6 +16,18 @@ export class CardsService {
     async getCardsByFolderId(folderId: number) {
         const cards = await this.cardRepository.findAll({
             where: { folderId },
+        })
+        return cards
+    }
+
+    async getAllCardsByUserId(userId: number) {
+        const cards = await this.cardRepository.findAll({
+            include: [
+                {
+                    model: Folder,
+                    where: { userId },
+                },
+            ],
         })
         return cards
     }
