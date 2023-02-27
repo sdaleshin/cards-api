@@ -5,7 +5,7 @@ export class UpdateCardDto {
     readonly title: string
 
     @ApiProperty({ example: 'explanation' })
-    readonly explanation: string
+    readonly explanation?: string
 
     @ApiProperty({ example: 1 })
     readonly folderId: number

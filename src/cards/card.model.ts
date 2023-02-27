@@ -11,7 +11,7 @@ import { Folder } from 'src/folders/folder.model'
 
 export interface CardCreationAttrs {
     title: string
-    explanation: string
+    explanation?: string | null
     folderId: number
 }
 
@@ -36,9 +36,9 @@ export class Card extends Model<Card, CardCreationAttrs> {
     @ApiProperty({ example: 'explanation' })
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
-    explanation: string
+    explanation?: string | null
 
     @ApiProperty({ example: 1 })
     @ForeignKey(() => Folder)
