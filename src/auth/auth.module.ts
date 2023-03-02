@@ -11,7 +11,8 @@ import { FoldersModule } from '../folders/folders.module'
     providers: [AuthService],
     imports: [
         ConfigModule.forRoot(),
-        forwardRef(() => [UsersModule, FoldersModule]),
+        forwardRef(() => UsersModule),
+        forwardRef(() => FoldersModule),
         JwtModule.register({
             secret: process.env.PG_DB_NAME,
             signOptions: {

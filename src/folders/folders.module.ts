@@ -13,5 +13,6 @@ import { User } from 'src/users/user.model'
         SequelizeModule.forFeature([Folder, User]),
         forwardRef(() => AuthModule),
     ],
+    exports: [FoldersService],
 })
 export class FoldersModule {}

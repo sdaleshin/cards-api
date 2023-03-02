@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { LoginOrRegisterWithGoogleDto } from './dto/login-or-register-with-google-dto'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
@@ -10,6 +10,7 @@ import { FoldersService } from '../folders/folders.service'
 export class AuthService {
     constructor(
         private userService: UsersService,
+        @Inject(FoldersService)
         private folderService: FoldersService,
         private jwtService: JwtService,
     ) {}
