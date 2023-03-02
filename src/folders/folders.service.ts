@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize'
 import { Folder, FolderCreationAttrs } from './folder.model'
 import { UpdateFolderDto } from './dto/UpdateFolderDto'
 
+const DEFAULT_FOLDER_NAME = 'Default'
+
 @Injectable()
 export class FoldersService {
     constructor(@InjectModel(Folder) private folderRepository: typeof Folder) {}
@@ -10,6 +12,13 @@ export class FoldersService {
     async createFolder(folderCreationAttrs: FolderCreationAttrs) {
         const folder = await this.folderRepository.create(folderCreationAttrs)
         return folder
+    }
+
+    async createDefaultFolder(userId: number) {
+        return await this.createFolder({
+            name: DEFAULT_FOLDER_NAME,
+            userId,
+        })
     }
 
     async getAllFoldersByUserId(userId: number) {

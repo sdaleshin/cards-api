@@ -9,8 +9,20 @@ export class CardsService {
     constructor(@InjectModel(Card) private cardRepository: typeof Card) {}
 
     async create(cardCreationAttrs: CardCreationAttrs) {
-        const card = await this.cardRepository.create(cardCreationAttrs)
-        return card
+        const cardFoundByTitle = await this.cardRepository.findOne({
+            where: {
+                title: cardCreationAttrs.title,
+                folderId: cardCreationAttrs.folderId,
+            },
+        })
+        if (cardFoundByTitle) {
+            cardFoundByTitle.explanation =
+                cardFoundByTitle.explanation + cardCreationAttrs.explanation
+            await cardFoundByTitle.save()
+            return cardFoundByTitle
+        } else {
+            return await this.cardRepository.create(cardCreationAttrs)
+        }
     }
 
     async getCardsByFolderId(folderId: number) {

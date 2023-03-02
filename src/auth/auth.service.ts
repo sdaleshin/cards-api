@@ -4,11 +4,13 @@ import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import { User } from '../users/user.model'
 import { GoogleJwtType, JwtTokenPayload } from './auth.type'
+import { FoldersService } from '../folders/folders.service'
 
 @Injectable()
 export class AuthService {
     constructor(
         private userService: UsersService,
+        private folderService: FoldersService,
         private jwtService: JwtService,
     ) {}
 
@@ -32,10 +34,10 @@ export class AuthService {
         )
 
         if (!user) {
-            user = await this.userService.createUser({
-                email: decodedGoogleToken.email,
-                name: decodedGoogleToken.name,
-            })
+            user = await this.createUserAndDefaultFolder(
+                decodedGoogleToken.email,
+                decodedGoogleToken.name,
+            )
         }
         return this.generateToken(user)
     }
@@ -49,5 +51,14 @@ export class AuthService {
         return {
             token: this.jwtService.sign(payload),
         }
+    }
+
+    private async createUserAndDefaultFolder(email: string, name: string) {
+        const user = await this.userService.createUser({
+            email,
+            name,
+        })
+        await this.folderService.createDefaultFolder(user.id)
+        return user
     }
 }
