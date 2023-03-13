@@ -16,8 +16,8 @@ export class CardsService {
             },
         })
         if (cardFoundByTitle) {
-            cardFoundByTitle.explanation =
-                cardFoundByTitle.explanation + cardCreationAttrs.explanation
+            // cardFoundByTitle.explanation =
+            //     cardFoundByTitle.explanation + cardCreationAttrs.explanation
             await cardFoundByTitle.save()
             return cardFoundByTitle
         } else {
