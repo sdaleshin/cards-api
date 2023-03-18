@@ -8,6 +8,7 @@ import { FoldersModule } from './folders/folders.module'
 import { CardsModule } from './cards/cards.module'
 import { Folder } from './folders/folder.model'
 import { Card } from './cards/card.model'
+import { DictionaryModule } from './dictionary/dictionary.module';
 
 @Module({
     imports: [
@@ -32,6 +33,7 @@ import { Card } from './cards/card.model'
         AuthModule,
         FoldersModule,
         CardsModule,
+        DictionaryModule,
     ],
     controllers: [],
     providers: [],

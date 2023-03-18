@@ -40,7 +40,8 @@
     "sequelize": "^6.15.0",
     "sequelize-cli": "^6.4.1",
     "sequelize-typescript": "^2.1.2",
-    "swagger-ui-express": "^4.3.0"
+    "swagger-ui-express": "^4.3.0",
+    "wordnet": "^2.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

@@ -5,6 +5,7 @@ import {
     NestFastifyApplication,
 } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { initWordnet, lookupWord } from './dictionary/wordnet'
 
 async function bootstrap() {
     const PORT = process.env.PORT || 3000
@@ -24,6 +25,10 @@ async function bootstrap() {
     SwaggerModule.setup('/api/docs', app, document)
 
     app.enableCors()
+
+    await initWordnet()
+
+    console.log('Word tranlsation', JSON.stringify(await lookupWord('look')))
 
     await app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server started on port ${PORT}`)
