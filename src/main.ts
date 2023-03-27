@@ -27,9 +27,6 @@ async function bootstrap() {
     app.enableCors()
 
     await initWordnet()
-
-    console.log('Word tranlsation', JSON.stringify(await lookupWord('look')))
-
     await app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server started on port ${PORT}`)
     })

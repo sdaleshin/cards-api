@@ -1,15 +1,20 @@
 import { Definition } from './wordnet.type'
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const wordnet = require('wordnet')
+const wndbWithExceptions = require('wndb-with-exceptions')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const WordNet = require('node-wordnet')
 
-export const initWordnet = (databaseDir?: string): Promise<undefined> => {
-    return wordnet.init()
+let nodeWordnet = null
+export const initWordnet = (): Promise<any> => {
+    nodeWordnet = new WordNet({ dataDir: wndbWithExceptions.path, cache: true })
+    return nodeWordnet.open()
 }
 
-export const lookupWord = (
-    word: string,
-    skipPointers?: boolean,
-): Promise<Definition[]> => {
-    return wordnet.lookup(word, skipPointers)
+export const lookupWord = async (word: string): Promise<Definition[]> => {
+    const correctedForms = await nodeWordnet.validForms(word)
+    const result = []
+    for (const item of correctedForms) {
+        result.push(await nodeWordnet.lookup(item))
+    }
+    return result.flat()
 }

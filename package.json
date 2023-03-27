@@ -32,6 +32,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "fastify-swagger": "^4.13.1",
+    "node-wordnet": "github:morungos/wordnet#develop",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",
@@ -41,7 +42,7 @@
     "sequelize-cli": "^6.4.1",
     "sequelize-typescript": "^2.1.2",
     "swagger-ui-express": "^4.3.0",
-    "wordnet": "^2.0.0"
+    "wndb-with-exceptions": "^3.0.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

@@ -1,38 +1,38 @@
-import {
-    Definition,
-    DefinitionMeta,
-    PointerSymbol,
-    ShortSynsetType,
-    SynsetType,
-} from '../wordnet.type'
+import { Definition, DefinitionPointer } from '../wordnet.type'
 import { ApiProperty } from '@nestjs/swagger'
 
-class DefinitionMetaDto implements DefinitionMeta {
+class DefinitionPointerDto implements DefinitionPointer {
     @ApiProperty()
-    lexFilenum: number
+    pointerSymbol: string
     @ApiProperty()
-    pointerCount: number
+    pos: string
     @ApiProperty()
-    pointers: {
-        pointerSymbol: PointerSymbol
-        synsetOffset: number
-        pos: ShortSynsetType
-        sourceTargetHex: string
-        data: Definition
-    }[]
+    sourceTarget: string
     @ApiProperty()
     synsetOffset: number
-    @ApiProperty()
-    synsetType: SynsetType
-    @ApiProperty()
-    wordCount: number
-    @ApiProperty()
-    words: { word: string; lexId: number }[]
 }
 
 export class DefinitionDto implements Definition {
     @ApiProperty()
-    glossary: string
-    @ApiProperty({ type: DefinitionMetaDto })
-    meta: DefinitionMetaDto
+    def: string
+    @ApiProperty()
+    exp: string[]
+    @ApiProperty()
+    gloss: string
+    @ApiProperty()
+    lemma: string
+    @ApiProperty()
+    lexFilenum: number
+    @ApiProperty()
+    lexId: string
+    @ApiProperty()
+    pos: string
+    @ApiProperty()
+    ptrs: DefinitionPointerDto[]
+    @ApiProperty()
+    synonyms: string[]
+    @ApiProperty()
+    synsetOffset: number
+    @ApiProperty()
+    wCnt: number
 }
