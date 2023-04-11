@@ -8,7 +8,8 @@ import { FoldersModule } from './folders/folders.module'
 import { CardsModule } from './cards/cards.module'
 import { Folder } from './folders/folder.model'
 import { Card } from './cards/card.model'
-import { DictionaryModule } from './dictionary/dictionary.module';
+import { DictionaryModule } from './dictionary/dictionary.module'
+import { Auth } from './auth/auth.model'
 
 @Module({
     imports: [
@@ -20,7 +21,7 @@ import { DictionaryModule } from './dictionary/dictionary.module';
             username: process.env.PG_USERNAME,
             password: process.env.PG_PASSWORD,
             database: process.env.PG_DB_NAME,
-            models: [User, Folder, Card],
+            models: [User, Folder, Card, Auth],
             autoLoadModels: true,
             dialectOptions: {
                 ssl: {

@@ -1,6 +1,7 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript'
 import { ApiProperty } from '@nestjs/swagger'
 import { Folder } from 'src/folders/folder.model'
+import { Auth } from '../auth/auth.model'
 
 interface UserCreationAttrs {
     email: string
@@ -35,4 +36,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
     @HasMany(() => Folder)
     folders: Folder[]
+
+    @HasMany(() => Auth, { onDelete: 'cascade', hooks: true })
+    auths: Auth[]
 }

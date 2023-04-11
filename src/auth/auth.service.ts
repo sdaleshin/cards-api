@@ -1,10 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { LoginOrRegisterWithGoogleDto } from './dto/login-or-register-with-google-dto'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import { User } from '../users/user.model'
 import { GoogleJwtType, JwtTokenPayload } from './auth.type'
 import { FoldersService } from '../folders/folders.service'
+import { InjectModel } from '@nestjs/sequelize'
+import { Auth } from './auth.model'
+import { RefreshTokenDto } from './dto/refresh-token-dto'
 
 @Injectable()
 export class AuthService {
@@ -13,6 +16,7 @@ export class AuthService {
         @Inject(FoldersService)
         private folderService: FoldersService,
         private jwtService: JwtService,
+        @InjectModel(Auth) private authRepository: typeof Auth,
     ) {}
 
     async loginOrRegisterWithGoogle(
@@ -40,10 +44,39 @@ export class AuthService {
                 decodedGoogleToken.name,
             )
         }
-        return this.generateToken(user)
+        const tokens = await this.generateTokens(user)
+        this.saveRefreshToken(user.id, tokens.refreshToken)
+        return tokens
     }
 
-    private async generateToken(user: User) {
+    async refreshToken(refreshTokenDto: RefreshTokenDto) {
+        const refreshToken = await this.authRepository.findOne({
+            where: {
+                refreshToken: refreshTokenDto.refreshToken,
+            },
+        })
+        if (!refreshToken) {
+            throw new UnauthorizedException()
+        }
+        const user = await this.userService.getUserById(refreshToken.userId)
+        const tokens = await this.generateTokens(user)
+        await this.authRepository.destroy({
+            where: {
+                refreshToken: refreshTokenDto.refreshToken,
+            },
+        })
+        this.saveRefreshToken(user.id, tokens.refreshToken)
+        return tokens
+    }
+
+    private saveRefreshToken(userId, refreshToken) {
+        this.authRepository.create({
+            userId,
+            refreshToken,
+        })
+    }
+
+    private async generateTokens(user: User) {
         const payload: JwtTokenPayload = {
             id: user.id,
             email: user.email,
@@ -51,6 +84,10 @@ export class AuthService {
         }
         return {
             token: this.jwtService.sign(payload),
+            refreshToken: this.jwtService.sign(payload, {
+                secret: process.env.JWT_REFRESH_KEY,
+                expiresIn: '30d',
+            }),
         }
     }
 

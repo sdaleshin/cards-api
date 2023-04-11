@@ -5,16 +5,19 @@ import { UsersModule } from '../users/users.module'
 import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule } from '@nestjs/config'
 import { FoldersModule } from '../folders/folders.module'
+import { SequelizeModule } from '@nestjs/sequelize'
+import { Auth } from './auth.model'
 
 @Module({
     controllers: [AuthController],
     providers: [AuthService],
     imports: [
+        SequelizeModule.forFeature([Auth]),
         ConfigModule.forRoot(),
         forwardRef(() => UsersModule),
         forwardRef(() => FoldersModule),
         JwtModule.register({
-            secret: process.env.PG_DB_NAME,
+            secret: process.env.JWT_PRIVATE_KEY,
             signOptions: {
                 expiresIn: '24h',
             },
