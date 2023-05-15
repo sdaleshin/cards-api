@@ -14,6 +14,7 @@ export interface CardCreationAttrs {
     explanation: object
     type: string
     folderId: number
+    hash: string
 }
 
 @Table({ tableName: 'cards' })
@@ -40,6 +41,13 @@ export class Card extends Model<Card, CardCreationAttrs> {
         allowNull: false,
     })
     type: string
+
+    @ApiProperty({ example: 'hash' })
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    hash: string
 
     @ApiProperty({ example: {} })
     @Column({

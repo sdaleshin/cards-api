@@ -3,25 +3,33 @@ import { InjectModel } from '@nestjs/sequelize'
 import { Card, CardCreationAttrs } from './card.model'
 import { UpdateCardDto } from './dto/UpdateCardDto'
 import { Folder } from '../folders/folder.model'
+import { MerkleJson } from 'merkle-json'
+import { CreateCardDto } from './dto/CreateCardDto'
+
+const mj = new MerkleJson()
+
+const getHash = (obj) => {
+    return mj.hash(obj)
+}
 
 @Injectable()
 export class CardsService {
     constructor(@InjectModel(Card) private cardRepository: typeof Card) {}
 
-    async create(cardCreationAttrs: CardCreationAttrs) {
-        const cardFoundByTitle = await this.cardRepository.findOne({
+    async create(cardCreationDto: CreateCardDto) {
+        const hash = getHash(cardCreationDto)
+        const cardFoundByHash = await this.cardRepository.findOne({
             where: {
-                title: cardCreationAttrs.title,
-                folderId: cardCreationAttrs.folderId,
+                hash,
             },
         })
-        if (cardFoundByTitle) {
-            // cardFoundByTitle.explanation =
-            //     cardFoundByTitle.explanation + cardCreationAttrs.explanation
-            await cardFoundByTitle.save()
-            return cardFoundByTitle
+        if (cardFoundByHash) {
+            return cardFoundByHash
         } else {
-            return await this.cardRepository.create(cardCreationAttrs)
+            return await this.cardRepository.create({
+                ...cardCreationDto,
+                hash,
+            })
         }
     }
 
@@ -51,7 +59,9 @@ export class CardsService {
         }
         card.title = updateCardDto.title
         card.explanation = updateCardDto.explanation
+        card.type = updateCardDto.type
         card.folderId = updateCardDto.folderId
+        card.hash = getHash(updateCardDto)
         await card.save()
         return card
     }
