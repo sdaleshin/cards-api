@@ -12,21 +12,22 @@ import { User } from '../users/user.model'
 import { Card } from '../cards/card.model'
 
 export interface FolderCreationAttrs {
+    id?: string
     name: string
-    userId: number
-    parentId?: number
+    userId: string
+    parentId?: string
 }
 
 @Table({ tableName: 'folders' })
 export class Folder extends Model<Folder, FolderCreationAttrs> {
     @ApiProperty({ example: 2 })
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.UUID,
         unique: true,
-        autoIncrement: true,
+        defaultValue: DataType.UUIDV4,
         primaryKey: true,
     })
-    id: number
+    id: string
 
     @ApiProperty({ example: 'new folder' })
     @Column({
@@ -35,21 +36,21 @@ export class Folder extends Model<Folder, FolderCreationAttrs> {
     })
     name: string
 
-    @ApiProperty({ example: 1 })
+    @ApiProperty({ example: '5f16f22e-821a-4d97-ab28-131a87d49d0b' })
     @ForeignKey(() => User)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.UUID,
         allowNull: false,
     })
-    userId: number
+    userId: string
 
-    @ApiProperty({ example: 1 })
+    @ApiProperty({ example: '5f16f22e-821a-4d97-ab28-131a87d49d0b' })
     @ForeignKey(() => Folder)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.UUID,
         allowNull: true,
     })
-    parentId?: number
+    parentId?: string
 
     @BelongsTo(() => User, { onDelete: 'cascade', hooks: true })
     user: User

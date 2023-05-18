@@ -49,7 +49,7 @@ export class FoldersController {
     @ApiResponse({ status: 200, type: [Folder] })
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    update(@Param('id') id: number, @Body() updateFolderDto: UpdateFolderDto) {
+    update(@Param('id') id: string, @Body() updateFolderDto: UpdateFolderDto) {
         return this.foldersService.updateFolder(id, updateFolderDto)
     }
 
@@ -57,7 +57,7 @@ export class FoldersController {
     @ApiResponse({ status: 200, type: Number })
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    delete(@Param('id') id: number) {
+    delete(@Param('id') id: string) {
         return this.foldersService.deleteFolder(id)
     }
 }

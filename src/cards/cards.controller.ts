@@ -38,7 +38,7 @@ export class CardsController {
     @ApiResponse({ status: 200, type: [Card] })
     @UseGuards(JwtAuthGuard)
     @Get('/by-folder/:folderId')
-    getByFolderId(@Param('folderId') folderId: number) {
+    getByFolderId(@Param('folderId') folderId: string) {
         return this.cardsService.getCardsByFolderId(folderId)
     }
 
@@ -54,7 +54,7 @@ export class CardsController {
     @ApiResponse({ status: 200, type: Card })
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    update(@Param('id') id: number, @Body() updateCardDto: UpdateCardDto) {
+    update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
         return this.cardsService.updateCard(id, updateCardDto)
     }
 
@@ -62,7 +62,7 @@ export class CardsController {
     @ApiResponse({ status: 200, type: Number })
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    delete(@Param('id') id: number) {
+    delete(@Param('id') id: string) {
         return this.cardsService.deleteCard(id)
     }
 }

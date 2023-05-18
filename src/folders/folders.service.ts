@@ -10,25 +10,23 @@ export class FoldersService {
     constructor(@InjectModel(Folder) private folderRepository: typeof Folder) {}
 
     async createFolder(folderCreationAttrs: FolderCreationAttrs) {
-        const folder = await this.folderRepository.create(folderCreationAttrs)
-        return folder
+        return await this.folderRepository.create(folderCreationAttrs)
     }
 
-    async createDefaultFolder(userId: number) {
+    async createDefaultFolder(userId: string) {
         return await this.createFolder({
             name: DEFAULT_FOLDER_NAME,
             userId,
         })
     }
 
-    async getAllFoldersByUserId(userId: number) {
-        const folders = await this.folderRepository.findAll({
+    async getAllFoldersByUserId(userId: string) {
+        return await this.folderRepository.findAll({
             where: { userId },
         })
-        return folders
     }
 
-    async updateFolder(folderId: number, updateFolderDto: UpdateFolderDto) {
+    async updateFolder(folderId: string, updateFolderDto: UpdateFolderDto) {
         const folder = await this.folderRepository.findByPk(folderId)
         if (!folder) {
             throw new HttpException('Folder not found', HttpStatus.NOT_FOUND)
@@ -39,7 +37,7 @@ export class FoldersService {
         return folder
     }
 
-    async deleteFolder(folderId: number) {
+    async deleteFolder(folderId: string) {
         return this.folderRepository.destroy({ where: { id: folderId } })
     }
 }

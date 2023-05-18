@@ -16,14 +16,14 @@ export interface AuthCreationAttrs {
 
 @Table({ tableName: 'auth' })
 export class Auth extends Model<Auth, AuthCreationAttrs> {
-    @ApiProperty({ example: 1 })
+    @ApiProperty({ example: '5f16f22e-821a-4d97-ab28-131a87d49d0b' })
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.UUID,
         unique: true,
-        autoIncrement: true,
         primaryKey: true,
+        defaultValue: DataType.UUIDV4,
     })
-    id: number
+    id: string
 
     @ApiProperty({ example: 'refresh token' })
     @Column({
@@ -32,13 +32,13 @@ export class Auth extends Model<Auth, AuthCreationAttrs> {
     })
     refreshToken: string
 
-    @ApiProperty({ example: 1 })
+    @ApiProperty({ example: '5f16f22e-821a-4d97-ab28-131a87d49d0b' })
     @ForeignKey(() => User)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.UUID,
         allowNull: false,
     })
-    userId: number
+    userId: string
 
     @BelongsTo(() => User)
     user: User

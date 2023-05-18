@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class UpdateCardDto {
+    @ApiProperty({ example: 'hash' })
+    readonly hash: string
+
     @ApiProperty({ example: 'title' })
     readonly title: string
 
@@ -10,6 +13,6 @@ export class UpdateCardDto {
     @ApiProperty({ example: 'wordnet' })
     readonly type: string
 
-    @ApiProperty({ example: 1 })
-    readonly folderId: number
+    @ApiProperty({ example: 'folder id' })
+    readonly folderId: string
 }

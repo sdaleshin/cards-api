@@ -10,23 +10,24 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Folder } from 'src/folders/folder.model'
 
 export interface CardCreationAttrs {
+    id: string
     title: string
     explanation: object
     type: string
-    folderId: number
+    folderId: string
     hash: string
 }
 
 @Table({ tableName: 'cards' })
 export class Card extends Model<Card, CardCreationAttrs> {
-    @ApiProperty({ example: 2 })
+    @ApiProperty({ example: 'be320da4-3668-4bd2-b1bc-60f3fcd00ee7' })
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.UUID,
         unique: true,
-        autoIncrement: true,
         primaryKey: true,
+        defaultValue: DataType.UUIDV4,
     })
-    id: number
+    id: string
 
     @ApiProperty({ example: 'title' })
     @Column({
@@ -56,13 +57,13 @@ export class Card extends Model<Card, CardCreationAttrs> {
     })
     explanation: object
 
-    @ApiProperty({ example: 1 })
+    @ApiProperty({ example: '5f16f22e-821a-4d97-ab28-131a87d49d0b' })
     @ForeignKey(() => Folder)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.UUID,
         allowNull: false,
     })
-    folderId: number
+    folderId: string
 
     @BelongsTo(() => Folder)
     folder: Folder

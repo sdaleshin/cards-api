@@ -17,7 +17,7 @@ export class UsersService {
         return users
     }
 
-    async getUserById(id: number) {
+    async getUserById(id: string) {
         const user = await this.userRepository.findByPk(id)
         return user
     }
