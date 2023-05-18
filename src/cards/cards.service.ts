@@ -13,6 +13,7 @@ export class CardsService {
         const cardFoundByHash = await this.cardRepository.findOne({
             where: {
                 hash: cardCreationDto.hash,
+                folderId: cardCreationDto.folderId,
             },
         })
         if (cardFoundByHash) {
