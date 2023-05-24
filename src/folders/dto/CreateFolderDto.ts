@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateFolderDto {
-    @ApiProperty({ example: 'id' })
+    @ApiProperty({ example: 'id ' })
     readonly id: string
 
     @ApiProperty({ example: 'new folder' })

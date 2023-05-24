@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { Folder, FolderCreationAttrs } from './folder.model'
 import { UpdateFolderDto } from './dto/UpdateFolderDto'
+import { Sequelize } from 'sequelize-typescript'
+import { Card } from '../cards/card.model'
 
 const DEFAULT_FOLDER_NAME = 'Default'
 
@@ -23,6 +25,21 @@ export class FoldersService {
     async getAllFoldersByUserId(userId: string) {
         return await this.folderRepository.findAll({
             where: { userId },
+            include: [
+                {
+                    model: Card,
+                    attributes: [],
+                },
+            ],
+            attributes: {
+                include: [
+                    [
+                        Sequelize.fn('COUNT', Sequelize.col('cards.id')),
+                        'cardsCount',
+                    ],
+                ],
+            },
+            group: ['Folder.id'],
         })
     }
 
