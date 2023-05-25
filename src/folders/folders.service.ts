@@ -23,7 +23,7 @@ export class FoldersService {
     }
 
     async getAllFoldersByUserId(userId: string) {
-        return await this.folderRepository.findAll({
+        const folders = await this.folderRepository.findAll({
             where: { userId },
             include: [
                 {
@@ -45,6 +45,12 @@ export class FoldersService {
             },
             group: ['Folder.id'],
         })
+
+        type SelectResultType = Folder & { cardsCount: string }
+        return (folders as SelectResultType[]).map((f) => ({
+            ...f,
+            cardsCount: +f.cardsCount,
+        }))
     }
 
     async updateFolder(folderId: string, updateFolderDto: UpdateFolderDto) {
