@@ -1,11 +1,13 @@
 import {
     BelongsTo,
     Column,
+    CreatedAt,
     DataType,
     ForeignKey,
     HasMany,
     Model,
     Table,
+    UpdatedAt,
 } from 'sequelize-typescript'
 import { ApiProperty } from '@nestjs/swagger'
 import { User } from '../users/user.model'
@@ -51,6 +53,12 @@ export class Folder extends Model<Folder, FolderCreationAttrs> {
         allowNull: true,
     })
     parentId?: string
+
+    @CreatedAt
+    createdAt: Date
+
+    @UpdatedAt
+    updatedAt: Date
 
     @BelongsTo(() => User, { onDelete: 'cascade', hooks: true })
     user: User

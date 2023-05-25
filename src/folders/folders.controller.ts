@@ -16,6 +16,7 @@ import { CreateFolderDto } from './dto/CreateFolderDto'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { JwtTokenPayload } from '../auth/auth.type'
 import { UpdateFolderDto } from './dto/UpdateFolderDto'
+import { FolderDto } from './dto/FolderDto'
 
 interface Request {
     user: JwtTokenPayload
@@ -38,11 +39,13 @@ export class FoldersController {
     }
 
     @ApiOperation({ summary: 'Get all folders' })
-    @ApiResponse({ status: 200, type: [Folder] })
+    @ApiResponse({ status: 200, type: [FolderDto] })
     @UseGuards(JwtAuthGuard)
     @Get()
     getAll(@Req() request: Request) {
-        return this.foldersService.getAllFoldersByUserId(request.user.id)
+        return this.foldersService.getAllFoldersByUserId(
+            request.user.id,
+        ) as unknown as FolderDto[]
     }
 
     @ApiOperation({ summary: 'Update folder' })

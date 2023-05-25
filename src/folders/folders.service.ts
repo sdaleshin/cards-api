@@ -37,6 +37,10 @@ export class FoldersService {
                         Sequelize.fn('COUNT', Sequelize.col('cards.id')),
                         'cardsCount',
                     ],
+                    [
+                        Sequelize.fn('max', Sequelize.col('cards.updatedAt')),
+                        'cardsUpdatedAt',
+                    ],
                 ],
             },
             group: ['Folder.id'],

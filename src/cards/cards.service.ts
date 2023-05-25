@@ -1,13 +1,16 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { Card } from './card.model'
 import { UpdateCardDto } from './dto/UpdateCardDto'
 import { Folder } from '../folders/folder.model'
 import { CreateCardDto } from './dto/CreateCardDto'
+import { FoldersService } from '../folders/folders.service'
 
 @Injectable()
 export class CardsService {
-    constructor(@InjectModel(Card) private cardRepository: typeof Card) {}
+    constructor(
+        @InjectModel(Card) private cardRepository: typeof Card,
+    ) {}
 
     async create(cardCreationDto: CreateCardDto) {
         const cardFoundByHash = await this.cardRepository.findOne({
