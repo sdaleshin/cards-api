@@ -45,7 +45,7 @@ export class FoldersController {
     getAll(@Req() request: Request) {
         return this.foldersService.getAllFoldersByUserId(
             request.user.id,
-        ) as unknown as FolderDto
+        ) as unknown as FolderDto[]
     }
 
     @ApiOperation({ summary: 'Update folder' })
