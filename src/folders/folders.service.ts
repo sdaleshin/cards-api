@@ -46,11 +46,10 @@ export class FoldersService {
             group: ['Folder.id'],
         })
 
-        type SelectResultType = Folder & { cardsCount: string }
-        return (folders as SelectResultType[]).map((f) => ({
-            ...f,
-            cardsCount: +f.cardsCount,
-        }))
+        return folders.map((f) => {
+            const json = f.toJSON() as Folder & { cardsCount: string }
+            return { ...json, cardsCount: +json.cardsCount }
+        })
     }
 
     async updateFolder(folderId: string, updateFolderDto: UpdateFolderDto) {
