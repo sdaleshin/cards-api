@@ -27,7 +27,7 @@ export class Auth extends Model<Auth, AuthCreationAttrs> {
 
     @ApiProperty({ example: 'refresh token' })
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
     })
     refreshToken: string

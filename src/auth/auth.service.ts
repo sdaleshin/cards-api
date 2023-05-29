@@ -1,5 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
-import { LoginOrRegisterWithGoogleDto } from './dto/login-or-register-with-google-dto'
+import { LoginOrRegisterWithGoogleDTO } from './dto/LoginOrRegisterWithGoogleDTO'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import { User } from '../users/user.model'
@@ -7,7 +7,7 @@ import { GoogleJwtType, JwtTokenPayload } from './auth.type'
 import { FoldersService } from '../folders/folders.service'
 import { InjectModel } from '@nestjs/sequelize'
 import { Auth } from './auth.model'
-import { RefreshTokenDto } from './dto/refresh-token-dto'
+import { RefreshTokenDTO } from './dto/RefreshTokenDTO'
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,7 @@ export class AuthService {
     ) {}
 
     async loginOrRegisterWithGoogle(
-        loginWithGoogleDto: LoginOrRegisterWithGoogleDto,
+        loginWithGoogleDto: LoginOrRegisterWithGoogleDTO,
     ) {
         const decodedGoogleToken:
             | { name: string; email: string }
@@ -45,11 +45,11 @@ export class AuthService {
             )
         }
         const tokens = await this.generateTokens(user)
-        this.saveRefreshToken(user.id, tokens.refreshToken)
+        await this.saveRefreshToken(user.id, tokens.refreshToken)
         return tokens
     }
 
-    async refreshToken(refreshTokenDto: RefreshTokenDto) {
+    async refreshToken(refreshTokenDto: RefreshTokenDTO) {
         const refreshToken = await this.authRepository.findOne({
             where: {
                 refreshToken: refreshTokenDto.refreshToken,
@@ -70,7 +70,8 @@ export class AuthService {
     }
 
     private saveRefreshToken(userId, refreshToken) {
-        this.authRepository.create({
+        debugger
+        return this.authRepository.create({
             userId,
             refreshToken,
         })

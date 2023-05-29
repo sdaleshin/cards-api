@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class LoginOrRegisterWithGoogleDto {
+export class LoginOrRegisterWithGoogleDTO {
     @ApiProperty({ example: 'jwt token from google' })
     readonly credential: string
 

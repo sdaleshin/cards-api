@@ -23,6 +23,7 @@ import { Auth } from './auth/auth.model'
             database: process.env.PG_DB_NAME,
             models: [User, Folder, Card, Auth],
             autoLoadModels: true,
+            logQueryParameters: true,
             dialectOptions: {
                 ssl: {
                     require: true,
