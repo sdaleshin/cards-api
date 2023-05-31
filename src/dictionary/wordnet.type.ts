@@ -1,4 +1,5 @@
 export type Definition = {
+    word: string
     synsetOffset: number
     lexFilenum: number
     pos: string

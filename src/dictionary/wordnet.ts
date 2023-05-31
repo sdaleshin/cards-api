@@ -14,7 +14,9 @@ export const lookupWord = async (word: string): Promise<Definition[]> => {
     const correctedForms = await nodeWordnet.validForms(word)
     const result = []
     for (const item of correctedForms) {
-        result.push(await nodeWordnet.lookup(item))
+        const word = item.split('#')[0].toLowerCase()
+        const definitions = await nodeWordnet.lookup(item)
+        result.push(definitions.map((d) => ({ ...d, word })))
     }
     return result.flat()
 }

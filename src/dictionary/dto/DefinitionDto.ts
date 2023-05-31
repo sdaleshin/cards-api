@@ -14,6 +14,8 @@ class DefinitionPointerDto implements DefinitionPointer {
 
 export class DefinitionDto implements Definition {
     @ApiProperty()
+    word: string
+    @ApiProperty()
     def: string
     @ApiProperty()
     exp: string[]
