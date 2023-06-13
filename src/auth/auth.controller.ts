@@ -4,6 +4,7 @@ import { AuthService } from './auth.service'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { RefreshTokenDTO } from './dto/RefreshTokenDTO'
 import { AuthTokensDTO } from './dto/AuthTokensDTO'
+import { AuthInExtensionDTO } from './dto/AuthInExtensionDTO'
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -17,6 +18,13 @@ export class AuthController {
         @Body() loginWithGoogleDto: LoginOrRegisterWithGoogleDTO,
     ) {
         return this.authService.loginOrRegisterWithGoogle(loginWithGoogleDto)
+    }
+
+    @ApiOperation({ summary: 'Auth in extension' })
+    @ApiResponse({ status: 200, type: AuthTokensDTO })
+    @Post('/auth-in-extension')
+    authInExtension(@Body() authInExtensionDTO: AuthInExtensionDTO) {
+        return this.authService.authInExtension(authInExtensionDTO)
     }
 
     @ApiOperation({ summary: 'Refresh token' })

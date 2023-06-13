@@ -8,6 +8,8 @@ import { FoldersService } from '../folders/folders.service'
 import { InjectModel } from '@nestjs/sequelize'
 import { Auth } from './auth.model'
 import { RefreshTokenDTO } from './dto/RefreshTokenDTO'
+import { AuthInExtensionDTO } from './dto/AuthInExtensionDTO'
+import fetch from 'node-fetch'
 
 @Injectable()
 export class AuthService {
@@ -22,31 +24,48 @@ export class AuthService {
     async loginOrRegisterWithGoogle(
         loginWithGoogleDto: LoginOrRegisterWithGoogleDTO,
     ) {
-        const decodedGoogleToken:
-            | { name: string; email: string }
-            | GoogleJwtType =
-            loginWithGoogleDto.credential === 'test_user_token'
-                ? ({
-                      email: 'user@user.com',
-                      name: 'Valentin',
-                  } as GoogleJwtType)
-                : (this.jwtService.decode(
-                      loginWithGoogleDto.credential,
-                  ) as GoogleJwtType)
+        const decodedGoogleToken = this.jwtService.decode(
+            loginWithGoogleDto.credential,
+        ) as GoogleJwtType
 
-        let user = await this.userService.getUserByEmail(
-            decodedGoogleToken.email,
-        )
+        return this.authWithEmailAndName({
+            name: decodedGoogleToken.name,
+            email: decodedGoogleToken.email,
+        })
+    }
+
+    private async authWithEmailAndName({
+        name,
+        email,
+    }: {
+        name: string
+        email: string
+    }) {
+        let user = await this.userService.getUserByEmail(email)
 
         if (!user) {
-            user = await this.createUserAndDefaultFolder(
-                decodedGoogleToken.email,
-                decodedGoogleToken.name,
-            )
+            user = await this.createUserAndDefaultFolder(email, name)
         }
         const tokens = await this.generateTokens(user)
         await this.saveRefreshToken(user.id, tokens.refreshToken)
         return tokens
+    }
+
+    async authInExtension(authInExtensionDTO: AuthInExtensionDTO) {
+        const response = await fetch(
+            'https://www.googleapis.com/oauth2/v2/userinfo',
+            {
+                headers: {
+                    Authorization: 'Bearer ' + authInExtensionDTO.accessToken,
+                },
+            },
+        )
+
+        const data = await response.json()
+        return this.authWithEmailAndName({
+            name: data.name,
+            email: data.email,
+        })
     }
 
     async refreshToken(refreshTokenDto: RefreshTokenDTO) {
