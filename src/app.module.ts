@@ -10,6 +10,7 @@ import { Folder } from './folders/folder.model'
 import { Card } from './cards/card.model'
 import { DictionaryModule } from './dictionary/dictionary.module'
 import { Auth } from './auth/auth.model'
+import { TranslationModule } from './translation/translation.module';
 
 @Module({
     imports: [
@@ -36,6 +37,7 @@ import { Auth } from './auth/auth.model'
         FoldersModule,
         CardsModule,
         DictionaryModule,
+        TranslationModule,
     ],
     controllers: [],
     providers: [],

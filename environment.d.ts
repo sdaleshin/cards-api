@@ -9,6 +9,7 @@ declare global {
             PG_DB_NAME: string
             JWT_PRIVATE_KEY: string
             JWT_REFRESH_KEY: string
+            OPEN_AI_KEY: string
         }
     }
 }
