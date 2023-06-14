@@ -16,7 +16,7 @@ export class TranslationService {
         const chatCompletion = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
             messages: [{ role: 'user', content: var2 }],
-            max_tokens: 20,
+            max_tokens: 50,
             top_p: 0.2,
             temperature: 0.2,
         })
