@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { TranslationService } from './translation.service'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { RequestTranslationDTO } from './dto/RequestTranslationDTO'
+import { RequestTranslationForDictionaryDTO } from './dto/RequestTranslationForDictionaryDTO'
 
 @Controller('translation')
 export class TranslationController {
@@ -17,5 +18,15 @@ export class TranslationController {
             requestTranslationDTO.word,
             requestTranslationDTO.context,
         )
+    }
+
+    @ApiOperation({ summary: 'Translate word for dictionary' })
+    @ApiResponse({ status: 200 })
+    @UseGuards(JwtAuthGuard)
+    @Post('/for-dictionary')
+    async translateForDictionary(
+        @Body() dto: RequestTranslationForDictionaryDTO,
+    ) {
+        return await this.translationService.translateForDictionary(dto.word)
     }
 }
