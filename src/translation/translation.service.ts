@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Configuration, OpenAIApi } from 'openai'
+import { DictionaryService } from '../dictionary/dictionary.service'
 
 const configuration = new Configuration({
     apiKey: process.env.OPEN_AI_KEY,
@@ -8,6 +9,8 @@ const openai = new OpenAIApi(configuration)
 
 @Injectable()
 export class TranslationService {
+    constructor(private dictionaryService: DictionaryService) {}
+
     async translate(word: string, context: string) {
         const var1 = `Explain dictionary meaning of word "${word}", which was used in next context "${context}" in one sentence".`
 
@@ -44,6 +47,11 @@ export class TranslationService {
             temperature: 0,
         })
 
-        return chatCompletion.data
+        const normilizedWord = await this.dictionaryService.normalizeWord(word)
+
+        return {
+            word: normilizedWord,
+            data: chatCompletion.data,
+        }
     }
 }

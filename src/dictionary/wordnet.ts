@@ -20,3 +20,8 @@ export const lookupWord = async (word: string): Promise<Definition[]> => {
     }
     return result.flat()
 }
+
+export const normalizeWord = async (word: string): Promise<string> => {
+    const correctedForms = await nodeWordnet.validForms(word)
+    return correctedForms?.[0]?.split('#')[0].toLowerCase().split('_').join(' ')
+}
