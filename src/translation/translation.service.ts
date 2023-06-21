@@ -47,10 +47,10 @@ export class TranslationService {
             temperature: 0,
         })
 
-        const normilizedWord = await this.dictionaryService.normalizeWord(word)
+        const normalizedWord = await this.dictionaryService.normalizeWord(word)
 
         return {
-            word: normilizedWord,
+            word: normalizedWord ?? word.toLowerCase(),
             data: chatCompletion.data,
         }
     }
