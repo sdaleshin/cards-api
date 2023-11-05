@@ -1,10 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { LoginOrRegisterWithGoogleDTO } from './dto/LoginOrRegisterWithGoogleDTO'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import { User } from '../users/user.model'
 import { GoogleJwtType, JwtTokenPayload } from './auth.type'
-import { FoldersService } from '../folders/folders.service'
 import { InjectModel } from '@nestjs/sequelize'
 import { Auth } from './auth.model'
 import { RefreshTokenDTO } from './dto/RefreshTokenDTO'
@@ -15,8 +14,6 @@ import fetch from 'node-fetch'
 export class AuthService {
     constructor(
         private userService: UsersService,
-        @Inject(FoldersService)
-        private folderService: FoldersService,
         private jwtService: JwtService,
         @InjectModel(Auth) private authRepository: typeof Auth,
     ) {}
@@ -44,7 +41,7 @@ export class AuthService {
         let user = await this.userService.getUserByEmail(email)
 
         if (!user) {
-            user = await this.createUserAndDefaultFolder(email, name)
+            user = await this.createUser(email, name)
         }
         const tokens = await this.generateTokens(user)
         await this.saveRefreshToken(user.id, tokens.refreshToken)
@@ -111,12 +108,10 @@ export class AuthService {
         }
     }
 
-    private async createUserAndDefaultFolder(email: string, name: string) {
-        const user = await this.userService.createUser({
+    private async createUser(email: string, name: string) {
+        return await this.userService.createUser({
             email,
             name,
         })
-        await this.folderService.createDefaultFolder(user.id)
-        return user
     }
 }

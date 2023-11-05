@@ -8,9 +8,7 @@ import { FoldersService } from '../folders/folders.service'
 
 @Injectable()
 export class CardsService {
-    constructor(
-        @InjectModel(Card) private cardRepository: typeof Card,
-    ) {}
+    constructor(@InjectModel(Card) private cardRepository: typeof Card) {}
 
     async create(cardCreationDto: CreateCardDto) {
         const cardFoundByHash = await this.cardRepository.findOne({

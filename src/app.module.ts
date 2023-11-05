@@ -10,7 +10,9 @@ import { Folder } from './folders/folder.model'
 import { Card } from './cards/card.model'
 import { DictionaryModule } from './dictionary/dictionary.module'
 import { Auth } from './auth/auth.model'
-import { TranslationModule } from './translation/translation.module';
+import { TranslationModule } from './translation/translation.module'
+import { SettingsModule } from './settings/settings.module'
+import { Settings } from './settings/settings.model'
 
 @Module({
     imports: [
@@ -22,7 +24,7 @@ import { TranslationModule } from './translation/translation.module';
             username: process.env.PG_USERNAME,
             password: process.env.PG_PASSWORD,
             database: process.env.PG_DB_NAME,
-            models: [User, Folder, Card, Auth],
+            models: [User, Folder, Card, Auth, Settings],
             autoLoadModels: true,
             logQueryParameters: true,
             dialectOptions: {
@@ -38,6 +40,7 @@ import { TranslationModule } from './translation/translation.module';
         CardsModule,
         DictionaryModule,
         TranslationModule,
+        SettingsModule,
     ],
     controllers: [],
     providers: [],

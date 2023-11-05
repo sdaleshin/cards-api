@@ -6,6 +6,7 @@ import { Sequelize } from 'sequelize-typescript'
 import { Card } from '../cards/card.model'
 
 const DEFAULT_FOLDER_NAME = 'Default'
+const WORDS_FROM_CHROME_EXTENSION_FOLDER_NAME = 'Words from Chrome extension'
 
 @Injectable()
 export class FoldersService {
@@ -18,6 +19,13 @@ export class FoldersService {
     async createDefaultFolder(userId: string) {
         return await this.createFolder({
             name: DEFAULT_FOLDER_NAME,
+            userId,
+        })
+    }
+
+    async createChromeExtensionFolder(userId: string) {
+        return await this.createFolder({
+            name: WORDS_FROM_CHROME_EXTENSION_FOLDER_NAME,
             userId,
         })
     }
