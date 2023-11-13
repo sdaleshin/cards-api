@@ -74,6 +74,13 @@ export class AuthService {
         if (!refreshToken) {
             throw new UnauthorizedException()
         }
+        try {
+            this.jwtService.verify(refreshTokenDto.refreshToken, {
+                secret: process.env.JWT_REFRESH_KEY,
+            })
+        } catch (e) {
+            throw new UnauthorizedException()
+        }
         const user = await this.userService.getUserById(refreshToken.userId)
         const tokens = await this.generateTokens(user)
         await this.authRepository.destroy({
@@ -81,12 +88,11 @@ export class AuthService {
                 refreshToken: refreshTokenDto.refreshToken,
             },
         })
-        this.saveRefreshToken(user.id, tokens.refreshToken)
+        await this.saveRefreshToken(user.id, tokens.refreshToken)
         return tokens
     }
 
     private saveRefreshToken(userId, refreshToken) {
-        debugger
         return this.authRepository.create({
             userId,
             refreshToken,
