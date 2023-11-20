@@ -19,7 +19,7 @@ import { Auth } from './auth.model'
         JwtModule.register({
             secret: process.env.JWT_PRIVATE_KEY,
             signOptions: {
-                expiresIn: '1m',
+                expiresIn: '24h',
             },
         }),
     ],

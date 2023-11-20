@@ -109,7 +109,7 @@ export class AuthService {
             token: this.jwtService.sign(payload),
             refreshToken: this.jwtService.sign(payload, {
                 secret: process.env.JWT_REFRESH_KEY,
-                expiresIn: '3m',
+                expiresIn: '300d',
             }),
         }
     }
