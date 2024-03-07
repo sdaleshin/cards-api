@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { Configuration, OpenAIApi } from 'openai'
 import { DictionaryService } from '../dictionary/dictionary.service'
+import OpenAI from 'openai'
 
-const configuration = new Configuration({
+const openai = new OpenAI({
     apiKey: process.env.OPEN_AI_KEY,
 })
-const openai = new OpenAIApi(configuration)
 
 @Injectable()
 export class TranslationService {
@@ -16,7 +15,7 @@ export class TranslationService {
 
         const var2 = `Offer a clear and concise definition of exactly word "${word}" using simple language. This word used in sentence "${context}"`
 
-        const chatCompletion = await openai.createChatCompletion({
+        const chatCompletion = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: [{ role: 'user', content: var2 }],
             max_tokens: 50,
@@ -24,7 +23,7 @@ export class TranslationService {
             temperature: 0.2,
         })
 
-        return chatCompletion.data
+        return chatCompletion
         //
         // const response = await openai.createCompletion({
         //     model: 'gpt-3.5-turbo',
@@ -39,7 +38,7 @@ export class TranslationService {
     }
     async translateForDictionary(word: string) {
         const request = `print all explanations of "${word}"`
-        const chatCompletion = await openai.createChatCompletion({
+        const chatCompletion = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: [{ role: 'user', content: request }],
             max_tokens: 256,
@@ -51,7 +50,7 @@ export class TranslationService {
 
         return {
             word: normalizedWord ?? word.toLowerCase(),
-            data: chatCompletion.data,
+            data: chatCompletion,
         }
     }
 }

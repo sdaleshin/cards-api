@@ -13,6 +13,7 @@ import { Auth } from './auth/auth.model'
 import { TranslationModule } from './translation/translation.module'
 import { SettingsModule } from './settings/settings.module'
 import { Settings } from './settings/settings.model'
+import { JobAnalyzerModule } from './job-analyzer/job-analyzer.module'
 
 @Module({
     imports: [
@@ -40,6 +41,7 @@ import { Settings } from './settings/settings.model'
         CardsModule,
         DictionaryModule,
         TranslationModule,
+        JobAnalyzerModule,
         SettingsModule,
     ],
     controllers: [],
