@@ -6,7 +6,7 @@ RUN npm ci
 COPY . .
 RUN npm run prebuild && npm run build && npm prune --production
 
-FROM node:15.14.0
+FROM node:18.17.0
 
 WORKDIR /src
 COPY --from=BASEIMAGE /src/dist /src/dist
