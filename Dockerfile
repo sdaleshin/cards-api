@@ -1,4 +1,4 @@
-FROM node:15.14.0 AS BASEIMAGE
+FROM node:18.17.0 AS BASEIMAGE
 
 WORKDIR /src
 COPY package*.json ./
