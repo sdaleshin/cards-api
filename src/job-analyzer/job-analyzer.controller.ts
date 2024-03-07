@@ -13,6 +13,7 @@ export class JobAnalyzerController {
     async analyze(@Body() requestTranslationDTO: RequestJobAnalyzeDTO) {
         return await this.jobAnalyzerService.analyze(
             requestTranslationDTO.jobDescription,
+            requestTranslationDTO.questions,
         )
     }
 }
