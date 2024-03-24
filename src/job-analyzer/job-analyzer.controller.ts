@@ -7,11 +7,21 @@ import { RequestJobAnalyzeDTO } from './dto/RequestJobAnalyzeDTO'
 export class JobAnalyzerController {
     constructor(private jobAnalyzerService: JobAnalyzerService) {}
 
-    @ApiOperation({ summary: 'Translate word in context' })
+    @ApiOperation({ summary: 'Analyze job description with GPT' })
     @ApiResponse({ status: 200 })
     @Post('/analyze')
     async analyze(@Body() requestTranslationDTO: RequestJobAnalyzeDTO) {
         return await this.jobAnalyzerService.analyze(
+            requestTranslationDTO.jobDescription,
+            requestTranslationDTO.questions,
+        )
+    }
+
+    @ApiOperation({ summary: 'Analyze job description with Gemini' })
+    @ApiResponse({ status: 200 })
+    @Post('/analyze-gemini')
+    async analyzeGemini(@Body() requestTranslationDTO: RequestJobAnalyzeDTO) {
+        return await this.jobAnalyzerService.analyzeGemini(
             requestTranslationDTO.jobDescription,
             requestTranslationDTO.questions,
         )
