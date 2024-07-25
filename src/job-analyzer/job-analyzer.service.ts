@@ -15,9 +15,10 @@ Job Description: ${jobDescription}
 Questions: ${JSON.stringify(questions)}`
 
         const chatCompletion = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4o',
             messages: [{ role: 'user', content: test }],
-            max_tokens: questions.length * 150,
+            response_format: { type: 'json_object' },
+            max_tokens: questions.length * 300,
             top_p: 0.2,
             temperature: 0.2,
         })
