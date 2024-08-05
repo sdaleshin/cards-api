@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post } from '@nestjs/common'
 import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { JobAnalyzerService } from './job-analyzer.service'
 import { RequestJobAnalyzeDTO } from './dto/RequestJobAnalyzeDTO'
@@ -15,5 +15,12 @@ export class JobAnalyzerController {
             requestTranslationDTO.jobDescription,
             requestTranslationDTO.questions,
         )
+    }
+
+    @ApiOperation({ summary: 'Get selectors' })
+    @ApiResponse({ status: 200 })
+    @Get('/selectors')
+    async selectors() {
+        return ['.jobs-description', '#SALARY']
     }
 }
